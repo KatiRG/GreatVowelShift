@@ -95,7 +95,25 @@ d3.json("vowelshifts_v3.json", function(energy) {
       .links(energy.links)
       .layout(32);
 
-  var link = svg.append("g").selectAll(".link")
+  
+  
+  var yr_xpos = {ad1400: 0, ad1500: 157.16666666666666, ad1600: 314.3333333333333, ad1700: 471.5, 
+    ad1800: 628.6666666666666, ad1900: 785.8333333333333},
+    midcent = (yr_xpos.ad1500 - yr_xpos.ad1400)/2, ad1550 = yr_xpos.ad1500 + midcent,
+    ad1650 = yr_xpos.ad1600 + midcent, ad1750 = yr_xpos.ad1700 + midcent, 
+    ad1850 = yr_xpos.ad1800 + midcent;
+
+  var node = svg.append("g").selectAll(".node")
+      .data(energy.nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return just_move(d); });
+    // .call(d3.behavior.drag()
+    //   .origin(function(d) { return d; })
+    //   .on("dragstart", function() { this.parentNode.appendChild(this); })
+    //   .on("drag", dragmove));
+     
+	  var link = svg.append("g").selectAll(".link")
       .data(energy.links)
     .enter().append("path")
       .attr("class", "link")
@@ -106,31 +124,6 @@ d3.json("vowelshifts_v3.json", function(energy) {
   link.append("title")
       .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
 
-  
-  var yr_xpos = {ad1400: 0, ad1500: 157.16666666666666, ad1600: 314.3333333333333, ad1700: 471.5, ad1800: 628.6666666666666, ad1900: 785.8333333333333},
-    midcent = (yr_xpos.ad1500 - yr_xpos.ad1400)/2, ad1550 = yr_xpos.ad1500 + midcent,ad1650 = yr_xpos.ad1600 + midcent, ad1750 = yr_xpos.ad1700 + midcent, ad1850 = yr_xpos.ad1800 + midcent;
-  var node = svg.append("g").selectAll(".node")
-      .data(energy.nodes)
-    .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", function(d) { 
-	    console.log(d.x); 
-		//if (d.name=="o:" && d.x == yr_xpos.ad1500) { console.log(d.name); return "translate(282.9," + d.y + ")"}
-		if (d.name=="o:" && d.x == yr_xpos.ad1500) { console.log(d.name); return "translate(" + ad1550 + "," + d.y + ")"}
-		else if (d.name=="iu:" && d.x == yr_xpos.ad1500) { console.log(d.name); return "translate(" + ad1550 + "," + d.y + ")"}
-		else if (d.name=="\u03B5:i" && d.x == yr_xpos.ad1600) { console.log(d.name); return "translate(" + ad1550 + "," + d.y + ")"}
-		else if (d.name=="\u0259i" && d.x == yr_xpos.ad1600) { console.log(d.name); return "translate(" + ad1650 + "," + d.y + ")"}
-		else if (d.name=="\u028Ci" && d.x == yr_xpos.ad1700) { console.log(d.name); return "translate(" + ad1750 + "," + d.y + ")"}
-		else if (d.name=="\u03B5:" && d.x == yr_xpos.ad1700) { console.log(d.name); return "translate(" + yr_xpos.ad1600 + "," + d.y + ")"}
-		else if (d.name=="e:" && d.x == yr_xpos.ad1800) { console.log(d.name); return "translate(" + ad1750 + "," + d.y + ")"}
-		else if (d.name=="e\u026A" && d.x == yr_xpos.ad1900) { console.log(d.name); return "translate(" + ad1850 + "," + d.y + ")"}
-		else    {console.log(d.name); return "translate(" + d.x + "," + d.y + ")"}
-		; }) 
-    .call(d3.behavior.drag()
-      .origin(function(d) { return d; })
-      .on("dragstart", function() { this.parentNode.appendChild(this); })
-      .on("drag", dragmove));
-	  
 	  
 
   node.append("rect")
@@ -162,6 +155,30 @@ d3.json("vowelshifts_v3.json", function(energy) {
 	//console.log(d.links.source);
     sankey.relayout();
     link.attr("d", path);
+  }
+
+  function just_move(d) {
+
+      console.log(d.x); 
+    //if (d.name=="o:" && d.x == yr_xpos.ad1500) { console.log(d.name); return "translate(282.9," + d.y + ")"}
+    if (d.name=="o:" && d.x == yr_xpos.ad1500) 
+      { console.log(d.name); return "translate(" + ad1550 + "," + d.y + ")"}
+    else if (d.name=="iu:" && d.x == yr_xpos.ad1500) 
+      { console.log(d.name); return "translate(" + ad1550 + "," + d.y + ")"}
+    else if (d.name=="\u03B5:i" && d.x == yr_xpos.ad1600) 
+      { console.log(d.name); return "translate(" + ad1550 + "," + d.y + ")"}
+    else if (d.name=="\u0259i" && d.x == yr_xpos.ad1600) 
+      { console.log(d.name); return "translate(" + ad1650 + "," + d.y + ")"}
+    else if (d.name=="\u028Ci" && d.x == yr_xpos.ad1700) 
+      { console.log(d.name); return "translate(" + ad1750 + "," + d.y + ")"}
+    else if (d.name=="\u03B5:" && d.x == yr_xpos.ad1700) 
+      { console.log(d.name); return "translate(" + yr_xpos.ad1600 + "," + d.y + ")"}
+    else if (d.name=="e:" && d.x == yr_xpos.ad1800) 
+      { console.log(d.name); return "translate(" + ad1750 + "," + d.y + ")"}
+    else if (d.name=="e\u026A" && d.x == yr_xpos.ad1900) 
+      { console.log(d.name); return "translate(" + ad1850 + "," + d.y + ")"}
+    else    
+      {console.log(d.name); return "translate(" + d.x + "," + d.y + ")"}
   }
 });
 
