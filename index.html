@@ -33,37 +33,16 @@
 </style>
 <body>
 
-<header>
-  <aside>May 22, 2012</aside>
-  <a href="../" rel="author">Mike Bostock</a>
-</header>
-
 <h1>The Great Vowel Shift</h1>
 
 <p id="chart">
 
-<aside>Drag to rearrange nodes.</aside>
+Have you ever wondered why English spelling is often at odds with its pronunciation? The English language was a great aggregator of words from a variety of origins throughout the centuries, but the spelling did not quite keep pace with the changing sounds. Long vowels in particular underwent what is known as the <a href="http://en.wikipedia.org/wiki/Great_Vowel_Shift" target="blank">Great Vowel Shift</a> somewhere around the 15th century, as the English language transformed from Middle English to its modern equivalent that was reached around the 20th century.
+<br>
+<br>
 
-<p class="attribution">Source: <a href="http://www.decc.gov.uk/en/content/cms/tackling/2050/calculator_on/calculator_on.aspx">Department of Energy & Climate Change</a>, <a href="http://tamc.github.com/Sankey/">Tom Counsell</a>.
 
-<aside>Sankey diagrams are closely related to <a href="http://en.wikipedia.org/wiki/Alluvial_diagram">alluvial diagrams</a>, which show how network structure changes over time.</aside>
-
-<p><a href="http://en.wikipedia.org/wiki/Sankey_diagram">Sankey diagrams</a> visualize the magnitude of flow between nodes in a network. This intricate diagram shows a possible scenario for UK energy production and consumption in 2050: energy <b>supplies</b> are on the left, and <b>demands</b> are on the right. Intermediate nodes group related forms of production and show how energy is converted and transmitted before it is consumed (or lost!). The thickness of each link encodes the amount of flow from source to target.
-
-<p>This example is built with <a href="http://d3js.org">D3</a>’s <a href="https://github.com/d3/d3-plugins/tree/master/sankey">Sankey plugin</a>. The plugin takes as input the nodes and weighted links, computing positions via <a href="http://en.wikipedia.org/wiki/Gauss–Seidel_method">iterative relaxation</a>. After fixing the horizontal position of each node, the algorithm starts from the sources on the left, positioning downstream nodes so as to minimize link distance. A reverse pass is then made from right-to-left, and then the entire process is repeated several times. Overlapping nodes are shifted to avoid collision.
-
-<aside>The d3.sankey API is similar to D3’s <a href="http://mbostock.github.com/d3/ex/force.html">force-directed graph</a> layout, which is another type of network visualization.</aside>
-
-<p>The fully automatic layout is convenient for rapid visualization—positioning nodes manually is tedious! However, the algorithm is not perfect; links are drawn with partial transparency to highlight crossings. To improve readability and further disambiguate links, this example also lets you reposition nodes interactively. The algorithm could be improved in the future, say to minimize link crossing or to support loopback in cyclical networks.
-
-<p>Many thanks to Tom Counsell, whose <a href="http://tamc.github.com/Sankey/">Sankey library</a> provided inspiration for this example.
-
-<footer>
-  <aside>May 22, 2012</aside>
-  <a href="../" rel="author">Mike Bostock</a>
-</footer>
-
-<script src="http://d3js.org/d3.v2.min.js?2.9.1"></script>
+<script src="d3.v2.min.js?2.9.1"></script>
 <script src="sankey.js"></script>
 <script>
 
@@ -71,6 +50,7 @@ var margin = {top: 1, right: 1, bottom: 6, left: 1},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
+	
 var formatNumber = d3.format(",.0f"),
     format = function(d) { return formatNumber(d) + " TWh"; },
     color = d3.scale.category20();
@@ -88,7 +68,7 @@ var sankey = d3.sankey()
 
 var path = sankey.link();
 
-d3.json("vowelshifts_v3.json", function(energy) { 
+d3.json("vowelshifts.json", function(energy) { 
 
   sankey
       .nodes(energy.nodes)
@@ -129,10 +109,94 @@ d3.json("vowelshifts_v3.json", function(energy) {
   node.append("rect")
       .attr("height", function(d) { return d.dy; })
       .attr("width", sankey.nodeWidth())
-      .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
-      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+      .style("fill", function(d) { 
+	    if (d.name=="")
+		  {
+		  return d.color = "#C9C8C8"; 
+		  }
+		else
+		{
+		return d.color = color(d.name.replace(/ .*/, "")); 
+		}
+		})
+    .style("stroke", function(d) { 
+	  if (d.name!="")
+	    {
+	    return d3.rgb(d.color).darker(2); 
+		}
+	  else	
+		{
+		//return d.color = "#C9C8C8"; 
+		}
+		}) //outlines the rectangles in black
     .append("title")
-      .text(function(d) { return d.name + "\n" + format(d.value); });
+      //.text(function(d) { console.log(d.name); console.log(d.value); return d.name + "\n" + format(d.value); });
+	  .text(function(d) { console.log(d.name); 
+	  if (d.name=="a:")
+	    {
+	    return "vowel [a:] as in psalm"
+		}
+	  else if (d.name=="e:")
+        {
+		return "vowel [e:] similar to modern day fate"
+        }	
+      else if (d.name=="i:")
+        {
+		return "vowel [i:] similar to modern day weep"
+        }	
+      else if (d.name=="o:")
+        {
+		return "vowel [o:] similar to modern day boat"
+        }	
+      else if (d.name=="u:")
+        {
+		return "vowel [u:] similar to modern day moose"
+        }	
+      else if (d.name=="\u0252")
+        {
+		return "vowel [\u0252]: father"
+        }	
+      else if (d.name=="\u00E6")
+        {
+		return "vowel [\u00E6]: cat"
+        }	
+      else if (d.name=="a\u026A")
+        {
+		return "vowel [a\u026A]: five"
+        }	
+	  else if (d.name=="e\u026A")
+        {
+		return "vowel [e\u026A]: say"
+        }	
+	  else if (d.name=="\u025B:")
+        {
+		return "vowel [\u025B:]: bed"
+        }	
+      else if (d.name=="\u028C")
+        {
+		return "vowel [\u028C]: run"
+        }	
+      else if (d.name=="o\u028A")
+        {
+		return "vowel [o\u028A]: home"
+        }	
+      else if (d.name=="\u0259\u028A")
+        {
+		return "vowel [\u0259\u028A]: no"
+        }	
+      else if (d.name=="\u0254:")
+        {
+		return "vowel [\u0254:]: call"
+        }	 	
+      else if (d.name=="a\u028A")
+        {
+		return "vowel [a\u028A]: now"
+        }		
+	  else
+	    {
+		return d.name
+		}
+		});
 
   node.append("text")
       .attr("x", -6)
@@ -159,26 +223,26 @@ d3.json("vowelshifts_v3.json", function(energy) {
 
   function just_move(d) {
 
-      console.log(d.x); 
+      //console.log(d.x); 
     //if (d.name=="o:" && d.x == yr_xpos.ad1500) { console.log(d.name); return "translate(282.9," + d.y + ")"}
     if (d.name=="o:" && d.x == yr_xpos.ad1500) 
-      { console.log(d.name); return "translate(" + ad1550 + "," + d.y + ")"}
+      { return "translate(" + ad1550 + "," + d.y + ")"}
     else if (d.name=="iu:" && d.x == yr_xpos.ad1500) 
-      { console.log(d.name); return "translate(" + ad1550 + "," + d.y + ")"}
+      { return "translate(" + ad1550 + "," + d.y + ")"}
     else if (d.name=="\u03B5:i" && d.x == yr_xpos.ad1600) 
-      { console.log(d.name); return "translate(" + ad1550 + "," + d.y + ")"}
+      { return "translate(" + ad1550 + "," + d.y + ")"}
     else if (d.name=="\u0259i" && d.x == yr_xpos.ad1600) 
-      { console.log(d.name); return "translate(" + ad1650 + "," + d.y + ")"}
+      { return "translate(" + ad1650 + "," + d.y + ")"}
     else if (d.name=="\u028Ci" && d.x == yr_xpos.ad1700) 
-      { console.log(d.name); return "translate(" + ad1750 + "," + d.y + ")"}
+      { return "translate(" + ad1750 + "," + d.y + ")"}
     else if (d.name=="\u03B5:" && d.x == yr_xpos.ad1700) 
-      { console.log(d.name); return "translate(" + yr_xpos.ad1600 + "," + d.y + ")"}
+      { return "translate(" + yr_xpos.ad1600 + "," + d.y + ")"}
     else if (d.name=="e:" && d.x == yr_xpos.ad1800) 
-      { console.log(d.name); return "translate(" + ad1750 + "," + d.y + ")"}
+      { return "translate(" + ad1750 + "," + d.y + ")"}
     else if (d.name=="e\u026A" && d.x == yr_xpos.ad1900) 
-      { console.log(d.name); return "translate(" + ad1850 + "," + d.y + ")"}
+      { return "translate(" + ad1850 + "," + d.y + ")"}
     else    
-      {console.log(d.name); return "translate(" + d.x + "," + d.y + ")"}
+      { return "translate(" + d.x + "," + d.y + ")"}
   }
 });
 
