@@ -12,7 +12,7 @@
 .node rect {
   cursor: move;
   fill-opacity: .9;
-  shape-rendering: crispEdges;
+  //shape-rendering: crispEdges;
 }
 
 .node text {
@@ -67,7 +67,7 @@ var svg = d3.select("#chart").append("svg")
 
 var sankey = d3.sankey()
     .nodeWidth(20) //.nodeWidth(15) //specifies width of node rectangles
-    .nodePadding(10)
+    .nodePadding(10) //spaces between rows
     .size([width, height]);
 
 var path = sankey.link();
@@ -105,8 +105,8 @@ d3.json("vowelshifts.json", function(energy) {
       .style("stroke-width", function(d) { return Math.max(1, d.dy); })
       .sort(function(a, b) { return b.dy - a.dy; });
 
-  link.append("title")
-      .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
+  //link.append("title")
+  //    .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
 
 	  
 
