@@ -38,13 +38,33 @@
 <p id="chart">
 
 Have you ever wondered why English spelling is often at odds with its pronunciation? The English language was a great aggregator of words from a variety of origins throughout the centuries, but the spelling did not quite keep pace with the changing sounds. Long vowels in particular underwent what is known as the <a href="http://en.wikipedia.org/wiki/Great_Vowel_Shift" target="blank">Great Vowel Shift</a> somewhere around the 15th century, as the English language transformed from Middle English to its modern equivalent that was reached around the 20th century.
-<br>
-<br>
+<br><br><br>
+
+
+<div style="position:relative; left:-7px; top:-435px; color : #000000;">
+ <h2>1400</h2></div>
+<div style="position:relative; left:149px; top:-485px; color : #000000;">
+ <h2>1500</h2></div>
+
+<div style="position:relative; left:306px; top:-535px; color : #000000;">
+ <h2>1600</h2></div>
+<div style="position:relative; left:461px; top:-585px; color : #000000;">
+ <h2>1700</h2></div>
+<div style="position:relative; left:618px; top:-635px; color : #000000;">
+ <h2>1800</h2></div>
+<div style="position:relative; left:774px; top:-685px; color : #000000;">
+ <h2>1900</h2></div> 
+
 
 
 <script src="d3.v2.min.js?2.9.1"></script>
 <script src="sankey.js"></script>
+
+
+
 <script>
+
+
 
 var margin = {top: 1, right: 1, bottom: 6, left: 1},
     width = 960 - margin.left - margin.right,
@@ -250,4 +270,8 @@ d3.json("vowelshifts.json", function(energy) {
   }
 });
 
+
+
+
 </script>
+
